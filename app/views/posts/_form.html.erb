@@ -1,0 +1,9 @@
+<div class="col">
+  <div class="form-outline mb-4">
+    <%= f.text_area :content, class: "form-control shadow-sm", placeholder: "What's on your mind, #{current_user.email}?", :cols => 20, :rows => 1 %>
+    <%= content_tag :p, @post.errors.full_messages_for(:content).join(', '), class: 'text-danger' if @post.errors.has_key?(:content) %>
+    <%= f.select(:genre, Post.genres.keys.map { |key| [key.humanize, key] }, { :prompt => 'Privacy' }, class: "form-control form-select mt-3 shadow-sm") %>
+    <%= content_tag :p, @post.errors.full_messages_for(:genre).join(', '), class: 'text-danger' if @post.errors.has_key?(:genre) %>
+    <%= f.file_field :image, class: "form-control mt-3 mb-3 shadow-sm" %>
+  </div>
+</div>

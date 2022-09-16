@@ -1,0 +1,50 @@
+<%= render "shared_form/navbar" %>
+<style>
+    .btn:hover {
+        background-color: transparent !important;
+    }
+</style>
+<div class="container mb-5" style="margin-top: 100px">
+  <div class="card bg-light border-light shadow">
+    <div class="card-body">
+      <h1><b>Post</b></h1>
+      <%= link_to  new_post_path, class: "nav-link" do %>
+        <div class="form-outline mb-4 text-center">
+          <%= text_field_tag :p, nil, placeholder: "What's on your mind, #{current_user.email}?", readonly: :true, class: "form-control shadow-sm border-light" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% @posts.each do |post| %>
+    <div class="card mt-3 shadow border-light">
+      <div class="card-header shadow-sm border-light bg-light">
+        <div class="row">
+          <div class="col-10">
+            <h5 class="card-title mt-3" style="color:darkorange;"><%= post.user.email %></h5>
+            <%= content_tag :div, post.created_at.to_s(:long), class: "badge bg-light text-dark shadow-sm" %>&nbsp;<%= content_tag :div, post.genre.humanize, class: "badge bg-secondary shadow-sm" %>
+
+          </div>
+          <div class="col d-flex justify-content-end">
+            <div class="dropstart">
+              <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                <h3>...</h3>
+              </button>
+              <ul class="dropdown-menu">
+                <%= link_to "Edit", edit_post_path(post), class: "dropdown-item" %>
+                <%= link_to 'Delete', post_path(post), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-text"><b></b> <%= post.content %></p>
+        <% if post.image? %>
+          <div class="overflow-hidden" style="width: 100%; aspect-ratio: 2/1">
+            <%= image_tag post.image.url, style: "object-fit: cover" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

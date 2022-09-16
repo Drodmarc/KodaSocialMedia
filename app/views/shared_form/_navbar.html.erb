@@ -1,0 +1,15 @@
+<nav class="navbar navbar-dark bg-dark justify-content-md-end fixed-top">
+  <div class="container-fluid">
+    <%= link_to root_path, class: 'navbar-brand text-light' do %>
+      <h1 class="mx-5"><b>KODA-SM</b></h1>
+    <% end %>
+    <ul class="nav ms-auto">
+      <li class="nav-item text-white mt-2">
+        <%= current_user.email %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Sign out", destroy_user_session_path, class: "nav-link text-white", :method => :delete %>
+      </li>
+    </ul>
+  </div>
+</nav>
