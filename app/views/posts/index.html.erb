@@ -5,6 +5,7 @@
     }
 </style>
 <div class="container mb-5" style="margin-top: 100px">
+  <%= render "shared_error/flash_error" %>
   <div class="card bg-light border-light shadow">
     <div class="card-body">
       <h1><b>Post</b></h1>
@@ -22,14 +23,13 @@
           <div class="col-10">
             <h5 class="card-title mt-3" style="color:darkorange;"><%= post.user.email %></h5>
             <%= content_tag :div, post.created_at.to_s(:long), class: "badge bg-light text-dark shadow-sm" %>&nbsp;<%= content_tag :div, post.genre.humanize, class: "badge bg-secondary shadow-sm" %>
-
           </div>
           <div class="col d-flex justify-content-end">
             <div class="dropstart">
               <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                 <h3>...</h3>
               </button>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu shadow-sm border-light">
                 <%= link_to "Edit", edit_post_path(post), class: "dropdown-item" %>
                 <%= link_to 'Delete', post_path(post), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
               </ul>

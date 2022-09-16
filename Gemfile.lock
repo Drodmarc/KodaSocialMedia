@@ -223,7 +223,7 @@ DEPENDENCIES
   listen (~> 3.3)
   mysql2
   puma (~> 5.0)
-  pundit (~> 2.2)
+  pundit
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.6)
   sass-rails (>= 6)

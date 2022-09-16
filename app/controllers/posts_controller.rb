@@ -21,9 +21,12 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    authorize @post, :edit?, policy_class: PostPolicy
+  end
 
   def update
+    authorize @post, :update?, policy_class: PostPolicy
     if @post.update(post_params)
       flash[:notice] = "Successfully Updated"
       redirect_to posts_path
@@ -33,6 +36,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
+    authorize @post, :destroy?, policy_class: PostPolicy
     if @post.destroy
       flash[:notice] = "Successfully Deleted"
     else
