@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   root to: 'posts#index'
 
   resources :posts, except: :show do
-    resources :comments
+    resources :comments, except: :show
   end
 end

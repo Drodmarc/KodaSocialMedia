@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
   validates :content, :genre, presence: true
   belongs_to :user
-  has_many :posts
+  has_many :comments
 
   mount_uploader :image, ImageUploader
 
