@@ -4,10 +4,10 @@
         background-color: transparent !important;
     }
 </style>
-<div class="container mb-5" style="margin-top: 100px">
+<div class="container mb-5" style="margin-top: 120px">
   <%= render "shared_error/flash_error" %>
-  <div class="card bg-light border-light shadow">
-    <div class="card-body">
+  <div class="card shadow" style="background-color: #e4ede4">
+    <div class="card-body text-dark">
       <h1><b>Post</b></h1>
       <%= link_to  new_post_path, class: "nav-link" do %>
         <div class="form-outline mb-4 text-center">
@@ -18,16 +18,16 @@
   </div>
   <% @posts.each do |post| %>
     <div class="card mt-3 shadow border-light">
-      <div class="card-header shadow-sm border-light bg-light">
+      <div class="card-header shadow-sm border-light" style="background-color: #e4ede4">
         <div class="row">
           <div class="col-10">
-            <h5 class="card-title mt-3" style="color:darkorange;"><%= post.user.email %></h5>
+            <h5 class="card-title mt-3" style="color:darkorange;"><b><%= post.user.email %></b></h5>
             <%= content_tag :div, post.created_at.to_s(:long), class: "badge bg-light text-dark shadow-sm" %>&nbsp;<%= content_tag :div, post.genre.humanize, class: "badge bg-secondary shadow-sm" %>
           </div>
           <div class="col d-flex justify-content-end">
             <div class="dropstart">
               <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                <h3>...</h3>
+                <h5>...</h5>
               </button>
               <ul class="dropdown-menu shadow-sm border-light">
                 <%= link_to "Edit", edit_post_path(post), class: "dropdown-item" %>
