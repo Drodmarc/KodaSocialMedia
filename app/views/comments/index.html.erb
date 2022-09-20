@@ -29,19 +29,21 @@
           <div class="col mt-3">
             <h6><%= comment.user.email %></h6>
           </div>
-          <div class="col-8">
-            <div class="col d-flex justify-content-end">
-              <div class="dropend">
-                <button class="btn btn-sm" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                  <h6>...</h6>
-                </button>
-                <ul class="dropdown-menu shadow-sm border-light">
-                  <%= link_to "Edit", edit_post_comment_path(@post, comment), class: "dropdown-item" %>
-                  <%= link_to 'Delete', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
-                </ul>
+          <% if policy(comment).edit? %>
+            <div class="col-8">
+              <div class="col d-flex justify-content-end">
+                <div class="dropend">
+                  <button class="btn btn-sm" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <h6>...</h6>
+                  </button>
+                  <ul class="dropdown-menu shadow-sm border-light">
+                    <%= link_to "Edit", edit_post_comment_path(@post, comment), class: "dropdown-item" %>
+                    <%= link_to 'Delete', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
+          <% end %>
         </div>
         <p class="badge bg-light text-dark shadow-sm"><%= comment.content %></p>
       <% end %>

@@ -23,9 +23,12 @@ class CommentsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    authorize @comment, :edit?, policy_class: CommentPolicy
+  end
 
   def update
+    authorize @comment, :update?, policy_class: CommentPolicy
     if @comment.update(comment_params)
       flash[:notice] = "Successfully Updated"
       redirect_to post_comments_path
@@ -35,6 +38,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    authorize @comment, :destroy?, policy_class: CommentPolicy
     if @comment.destroy
       flash[:notice] = "Successfully Deleted"
       redirect_to post_comments_path
@@ -55,4 +59,3 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:content)
   end
 end
-
