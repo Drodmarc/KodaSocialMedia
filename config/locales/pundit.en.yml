@@ -9,3 +9,8 @@ en:
       edit?: You are not authorized to edit this comment
       update?: You are not authorized to update this comment
       destroy?: You are not authorized to destroy this comment
+    friendship_policy:
+      ignore?: You are not authorized to ignore this request
+      confirm?: You are not authorized to confirm this request
+      cancel?: You are not authorized to cancel this request
+      unfriend?: You are not authorized to unfriend this user

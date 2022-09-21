@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   resources :posts, except: :show do
     resources :comments, except: :show
   end
+  resources :friendships, only: [:index, :create] do
+    put :confirm, :unfriend, :ignore, :cancel
+  end
 end

@@ -1,0 +1,82 @@
+<%= render "shared_form/navbar" %>
+<div class="container mb-5" style="margin-top: 120px">
+  <%= render "shared_error/flash_error" %>
+  <div class="card shadow" style="background-color: #e4ede4">
+    <div class="card-body text-dark">
+      <div class="d-flex justify-content-center">
+        <%= link_to "Add Friends", friendships_path(records: 'add'), class: "btn btn-sm btn-light shadow-sm mx-4", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+        <%= link_to "All Friends", friendships_path(records: 'all'), class: "btn btn-sm btn-light shadow-sm mx-4", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+        <%= link_to "Friend Request", friendships_path(records: 'request'), class: "btn btn-sm btn-light shadow-sm mx-4", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+        <%= link_to "Sent Request", friendships_path(records: 'sent'), class: "btn btn-sm btn-light shadow-sm mx-4", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+      </div>
+    </div>
+  </div>
+  <% @users&.each do |user| %>
+    <div class="card mt-2 shadow border-light bg-body">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <b><%= user.email %></b>
+          </div>
+          <div class="col">
+            <div class="d-flex justify-content-end">
+              <%= link_to "Add", friendships_path(friend_id: user), data: { confirm: 'Are you sure you want to Add this user?' }, class: "btn btn-primary btn-sm px-3 shadow-sm", method: :post %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% @all_friends&.each do |all_friend| %>
+    <div class="card mt-2 shadow border-light bg-body">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <b><%= all_friend.friend.email if current_user == all_friend.user %></b>
+            <b><%= all_friend.user.email if current_user == all_friend.friend %></b>
+          </div>
+          <div class="col">
+            <div class="d-flex justify-content-end">
+              <%= link_to "Unfriend", friendship_unfriend_path(all_friend), data: { confirm: 'Are you sure you want to unfriend? this user' }, class: "btn btn-danger btn-sm px-2 shadow-sm", method: :put if all_friend.may_unfriend? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% @friend_requests&.each do |friendship| %>
+    <div class="card mt-2 shadow border-light bg-body">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <b><%= friendship.friend.email if current_user == friendship.user %></b>
+            <b><%= friendship.user.email if current_user == friendship.friend %></b>
+          </div>
+          <div class="col">
+            <div class="d-flex justify-content-end">
+              <%= link_to "Confirm", friendship_confirm_path(friendship), data: { confirm: 'Are you sure you want to confirm this request?' }, class: "btn btn-success btn-sm px-3 shadow-sm", method: :put if friendship.may_confirm? %>
+              <%= link_to "Ignore", friendship_ignore_path(friendship), data: { confirm: 'Are you sure you want to ignore this request?' }, class: "btn btn-danger btn-sm px-3 mx-3 shadow-sm", method: :put if friendship.may_ignore? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% @sent_requests&.each do |friendship| %>
+    <div class="card mt-2 shadow border-light bg-body">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <b><%= friendship.friend.email if current_user == friendship.user %></b>
+            <b><%= friendship.user.email if current_user == friendship.friend %></b>
+          </div>
+          <div class="col">
+            <div class="d-flex justify-content-end">
+              <%= link_to "Cancel", friendship_cancel_path(friendship), data: { confirm: 'Are you sure you want to cancel?' }, class: "btn btn-warning btn-sm px-3 shadow-sm", method: :put if friendship.may_cancel? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,14 +1,21 @@
-<nav class="navbar navbar-dark bg-light justify-content-md-end fixed-top">
+<nav class="navbar navbar-dark bg-light justify-content-md-end fixed-top" style="height: 80px">
   <div class="container-fluid">
-    <%= link_to root_path, class: 'navbar-brand text-dark' do %>
+    <%= link_to posts_path, class: 'navbar-brand text-dark' do %>
       <h1 class="mx-5"><b>KODA-SM</b></h1>
+      <div class="mx-5" style="margin-top: -19px; font-size: min( 3vw, 12px)">
+        <p><%= current_user.email %></p>
+      </div>
     <% end %>
-    <ul class="nav ms-auto">
-      <li class="nav-item text-dark mt-2">
-        <b><%= current_user.email %></b>
+    <ul class="nav ms-auto" style="margin-top: -20px">
+      <li class="nav-item">
+        <%= link_to friendships_path, class: "nav-link text-dark" do %>
+          <i class="fa-solid fa-user-group fa-lg"></i>
+        <% end %>
       </li>
       <li class="nav-item">
-        <b><%= link_to "Sign out", destroy_user_session_path, class: "nav-link text-dark", :method => :delete %></b>
+        <%= link_to destroy_user_session_path, class: "nav-link text-dark", :method => :delete do %>
+          <i class="fa-solid fa-right-from-bracket fa-lg"></i>
+        <% end %>
       </li>
     </ul>
   </div>
