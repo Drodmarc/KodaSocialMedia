@@ -1,9 +1,10 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:edit, :update, :destroy]
+  include ApplicationHelper
 
   def index
-    @posts = Post.includes(:user, :comments).order(id: :desc)
+    @posts = Post.where(id: filter_post).includes(:user, :comments).order(id: :desc)
   end
 
   def new

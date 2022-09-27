@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post
   before_action :set_comment, only: [:edit, :update, :destroy]
+  include ApplicationHelper
 
   def index
     @comments = @post.comments.includes(:user)
@@ -52,7 +53,7 @@ class CommentsController < ApplicationController
   end
 
   def set_post
-    @post = Post.find params[:post_id]
+    @post = Post.where(id: filter_post).find params[:post_id]
   end
 
   def comment_params
