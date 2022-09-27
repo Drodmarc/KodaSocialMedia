@@ -22,24 +22,29 @@
           <div class="col-2">
             <%= image_tag group.image.url, class: "img-thumbnail shadow-sm border-light", style: "width: 100%; height:100%" %>
           </div>
-          <div class="col-9">
+          <div class="col-8">
             <p class="badge bg-light text-dark shadow-sm" style="font-size: min( 2vw, 12px)"><%= group.privacy.humanize %></p>
             <h3 style="font-size: min( 3vw, 20px)"><b><%= group.name %></b></h3>
             <p style="font-size: min( 2vw, 15px)"><%= group.description %></p>
           </div>
-          <% if policy(group).edit? %>
-            <div class="col-1 d-flex justify-content-end">
-              <div class="dropstart">
-                <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                  <h5>...</h5>
-                </button>
-                <ul class="dropdown-menu shadow-sm border-light">
-                  <%= link_to "Edit", edit_group_path(group), class: "dropdown-item" %>
-                  <%= link_to 'Delete', group_path(group), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
-                </ul>
-              </div>
+          <div class="col-2">
+            <div class="d-flex justify-content-end">
+              <% if policy(group).edit? %>
+                <div class="dropstart">
+                  <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <h5>...</h5>
+                  </button>
+                  <ul class="dropdown-menu shadow-sm border-light">
+                    <%= link_to "Edit", edit_group_path(group), class: "dropdown-item" %>
+                    <%= link_to 'Delete', group_path(group), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
+                  </ul>
+                </div>
+              <% end %>
             </div>
-          <% end %>
+            <div class="d-flex justify-content-end">
+              <%= link_to "Join", join_groups_path(group_id: group), data: { confirm: 'Are you sure you want to join this group?' }, class: "btn btn-primary btn-sm px-3 shadow-sm", method: :post %>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -9,4 +9,5 @@ Rails.application.routes.draw do
     put :confirm, :unfriend, :ignore, :cancel
   end
   resources :groups
+  resources :join_groups
 end
