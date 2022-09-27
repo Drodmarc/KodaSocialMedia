@@ -1,0 +1,12 @@
+<div class="col">
+  <div class="form-outline mb-4">
+    <%= f.file_field :image, class: "form-control mt-3 mb-3 shadow-sm" %>
+    <%= content_tag :p, @group.errors.full_messages_for(:image).join(', '), class: 'text-danger' if @group.errors.has_key?(:image) %>
+    <%= f.text_field :name, class: "form-control mt-3 mb-3 shadow-sm", placeholder: "Name" %>
+    <%= content_tag :p, @group.errors.full_messages_for(:name).join(', '), class: 'text-danger' if @group.errors.has_key?(:name) %>
+    <%= f.text_area :description, class: "form-control mt-3 mb-3 shadow-sm", placeholder: "Description", :cols => 20, :rows => 1 %>
+    <%= content_tag :p, @group.errors.full_messages_for(:description).join(', '), class: 'text-danger' if @group.errors.has_key?(:description) %>
+    <%= f.select(:privacy, Group.privacies.keys.map { |key| [key.humanize, key] }, { :prompt => 'Privacy' }, class: "form-control form-select mt-3 mb-3 shadow-sm") %>
+    <%= content_tag :p, @group.errors.full_messages_for(:privacy).join(', '), class: 'text-danger' if @group.errors.has_key?(:privacy) %>
+  </div>
+</div>

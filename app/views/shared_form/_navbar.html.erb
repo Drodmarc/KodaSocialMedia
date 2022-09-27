@@ -8,6 +8,11 @@
     <% end %>
     <ul class="nav ms-auto" style="margin-top: -20px">
       <li class="nav-item">
+        <%= link_to groups_path, class: "nav-link text-dark" do %>
+          <i class="fa-solid fa-people-group fa-lg"></i>
+        <% end %>
+      </li>
+      <li class="nav-item">
         <%= link_to friendships_path, class: "nav-link text-dark" do %>
           <i class="fa-solid fa-user-group fa-lg"></i>
         <% end %>
