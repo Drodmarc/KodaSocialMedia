@@ -9,18 +9,56 @@
         </div>
         <div class="col-8 col-sm-8 col-md-9">
           <div class="d-flex justify-content-end">
-            <%= link_to " Create Group", new_group_path, class: "btn btn-success btn-sm mt-2 px-2 shadow-sm fa-plus", style: "font-size: min( 2vw, 15px)" %>
+            <%= link_to "Group Lists", groups_path(records: 'group_lists'), class: "btn btn-success btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+            <%= link_to "Requests", groups_path(records: 'requests'), class: "btn btn-success btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+            <%= link_to "Joined Group", groups_path(records: 'joined_groups'), class: "btn btn-success btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+            <%= link_to "Manage Group", groups_path(records: 'manage_groups'), class: "btn btn-success btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+            <%= link_to "", new_group_path, class: "btn btn-light btn-sm mt-2 px-2 shadow-sm fa-plus", style: "font-size: min( 1.5vw, 15px)" %>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <% @groups.each do |group| %>
+  <% @manage_groups&.each do |manage_group| %>
     <div class="card mt-3 shadow">
       <div class="card-body" style="background-color: #e4ede4">
         <div class="row">
           <div class="col-2">
-            <%= image_tag group.image.url, class: "img-thumbnail shadow-sm border-light", style: "width: 100%; height:100%" %>
+            <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill text-bg-light shadow-sm" style="font-size: min( 1vw, 20px)"><%= JoinGroup.pending.where(group: manage_group.group).size %></span>
+            <%= link_to group_path(manage_group.group), class: "text-decoration-none text-dark" do %>
+              <%= image_tag manage_group.group.image.url, class: "img-thumbnail shadow-sm border-light", style: "width: 100%; height:100%" %>
+            <% end %>
+          </div>
+          <div class="col-8">
+            <p class="badge bg-light text-dark shadow-sm" style="font-size: min( 1.5vw, 13px)"><%= manage_group.group.privacy.humanize %></p>
+            <h3 style="font-size: min( 3vw, 20px)"><b><%= manage_group.group.name %></b></h3>
+            <p style="font-size: min( 2vw, 15px)"><%= manage_group.group.description %></p>
+          </div>
+          <div class="col-2">
+            <div class="d-flex justify-content-end">
+              <div class="dropstart">
+                <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                  <h5>...</h5>
+                </button>
+                <ul class="dropdown-menu shadow-sm border-light">
+                  <%= link_to "Edit", edit_group_path(manage_group.group), class: "dropdown-item" %>
+                  <%= link_to 'Delete', group_path(manage_group.group), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% @group_lists&.each do |group| %>
+    <div class="card mt-3 shadow">
+      <div class="card-body" style="background-color: #e4ede4">
+        <div class="row">
+          <div class="col-2">
+            <%= link_to group_path(group), class: "text-decoration-none text-dark" do %>
+              <%= image_tag group.image.url, class: "img-thumbnail shadow-sm border-light", style: "width: 100%; height:100%" %>
+            <% end %>
           </div>
           <div class="col-8">
             <p class="badge bg-light text-dark shadow-sm" style="font-size: min( 2vw, 12px)"><%= group.privacy.humanize %></p>
@@ -29,20 +67,53 @@
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-end">
-              <% if policy(group).edit? %>
-                <div class="dropstart">
-                  <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                    <h5>...</h5>
-                  </button>
-                  <ul class="dropdown-menu shadow-sm border-light">
-                    <%= link_to "Edit", edit_group_path(group), class: "dropdown-item" %>
-                    <%= link_to 'Delete', group_path(group), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
-                  </ul>
-                </div>
-              <% end %>
+              <%= link_to "Join", join_groups_path(group_id: group), data: { confirm: 'Are you sure you want to join this group?' }, class: "btn btn-light btn-sm px-3 shadow-sm", method: :post %>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% @requests&.each do |request| %>
+    <div class="card mt-3 shadow">
+      <div class="card-body" style="background-color: #e4ede4">
+        <div class="row">
+          <div class="col-2">
+            <%= link_to group_path(request.group), class: "text-decoration-none text-dark" do %>
+              <%= image_tag request.group.image.url, class: "img-thumbnail shadow-sm border-light", style: "width: 100%; height:100%" %>
+            <% end %>
+          </div>
+          <div class="col-8">
+            <p class="badge bg-light text-dark shadow-sm" style="font-size: min( 2vw, 12px)"><%= request.group.privacy.humanize %></p>
+            <h3 style="font-size: min( 3vw, 20px)"><b><%= request.group.name %></b></h3>
+            <p style="font-size: min( 2vw, 15px)"><%= request.group.description %></p>
+          </div>
+          <div class="col-2">
             <div class="d-flex justify-content-end">
-              <%= link_to "Join", join_groups_path(group_id: group), data: { confirm: 'Are you sure you want to join this group?' }, class: "btn btn-primary btn-sm px-3 shadow-sm", method: :post %>
+              <%= link_to "Cancel", join_group_cancel_path(request), data: { confirm: 'Are you sure you want to confirm this request?' }, class: "btn btn-light btn-sm px-2 shadow-sm", method: :put if request.may_cancel? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% @joined_groups&.each do |joined_group| %>
+    <div class="card mt-3 shadow">
+      <div class="card-body" style="background-color: #e4ede4">
+        <div class="row">
+          <div class="col-2">
+            <%= link_to group_path(joined_group.group), class: "text-decoration-none text-dark" do %>
+              <%= image_tag joined_group.group.image.url, class: "img-thumbnail shadow-sm border-light", style: "width: 100%; height:100%" %>
+            <% end %>
+          </div>
+          <div class="col-8">
+            <p class="badge bg-light text-dark shadow-sm" style="font-size: min( 2vw, 12px)"><%= joined_group.group.privacy.humanize %></p>
+            <h3 style="font-size: min( 3vw, 20px)"><b><%= joined_group.group.name %></b></h3>
+            <p style="font-size: min( 2vw, 15px)"><%= joined_group.group.description %></p>
+          </div>
+          <div class="col-2">
+            <div class="d-flex justify-content-end">
+              <%= link_to "Leave Group", join_group_leave_path(joined_group, @group), data: { confirm: 'Are you sure you want to approve this user?' }, class: "btn btn-light btn-sm px-2 shadow-sm mt-2", method: :put if joined_group.may_leave? %>
             </div>
           </div>
         </div>

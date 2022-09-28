@@ -1,21 +1,33 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [:edit, :update, :destroy]
+  before_action :set_group, only: [:edit, :update, :destroy, :show]
 
   def index
-    @groups = Group.all
+    join_groups = current_user.join_groups.where.not(state: [:removed, :ignored, :leaved, :cancelled])
+    group_ids = join_groups.pluck(:group_id)
+    @group_lists = Group.where.not(id: group_ids) if params[:records].blank? || params[:records] == 'group_lists'
+    @requests = join_groups.pending.includes(:group) if params[:records] == 'requests'
+    @joined_groups = current_user.join_groups.approved.includes(:group) if params[:records] == 'joined_groups'
+    @manage_groups = current_user.join_groups.approved.where.not(role: :member).includes(:group) if params[:records] == 'manage_groups'
   end
 
   def new
     @group = Group.new
   end
 
+  def show
+    @approvals = JoinGroup.where.not(user: current_user).where(group: @group).pending.includes(:user) if params[:records] == 'approvals'
+    @members = JoinGroup.where(group: @group).approved.includes(:user) if params[:records] == 'members'
+  end
+
   def create
     @group = Group.new(group_params)
     @group.user = current_user
-    if @group.save
+    if @group.save!
+      join_group = JoinGroup.new(state: :approved, role: :owner, user: current_user, group: @group)
+      join_group.save!
       flash[:notice] = "Successfully Created"
-      redirect_to groups_path
+      redirect_to groups_path(records: :manage_groups)
     else
       render :new
     end
@@ -38,11 +50,12 @@ class GroupsController < ApplicationController
   def destroy
     authorize @group, :destroy?, policy_class: GroupPolicy
     if @group.destroy
+      @group.join_groups.destroy_all
       flash[:notice] = "Successfully Deleted"
     else
       flash[:alert] = "Can't delete this post!"
     end
-    redirect_to groups_path
+    redirect_to groups_path(records: :manage_groups)
   end
 
   private

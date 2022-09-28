@@ -9,5 +9,8 @@ Rails.application.routes.draw do
     put :confirm, :unfriend, :ignore, :cancel
   end
   resources :groups
-  resources :join_groups
+  resources :join_groups do
+    put 'approve/:group_id', as: :approve, to: 'join_groups#approve'
+    put :remove, :ignore, :leave, :cancel
+  end
 end

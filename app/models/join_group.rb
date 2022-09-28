@@ -4,27 +4,35 @@ class JoinGroup < ApplicationRecord
   belongs_to :user
   belongs_to :group
 
-  enum role: [:owner, :admin, :moderator, :member]
+  enum role: [:member, :moderator,:admin, :owner]
 
   include AASM
   aasm column: :state do
     state :pending, initial: true
-    state :approved, :removed, :ignored, :leaved
+    state :approved, :removed, :ignored, :leaved, :cancelled
 
-    event :approved do
+    event :approve do
       transitions from: :pending, to: :approved
     end
 
-    event :ignored do
+    event :ignore do
       transitions from: :pending, to: :ignored
     end
 
-    event :removed do
+    event :cancel do
+      transitions from: :pending, to: :cancelled
+    end
+
+    event :remove do
       transitions from: :approved, to: :removed
     end
 
-    event :leaved do
+    event :leave do
       transitions from: :approved, to: :leaved
+    end
+
+    event :request do
+      transitions from: [:removed, :ignored, :leaved, :cancelled], to: :pending
     end
   end
 end
