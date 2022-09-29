@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   resources :groups
   resources :join_groups do
     put 'approve/:group_id', as: :approve, to: 'join_groups#approve'
-    put :remove, :ignore, :leave, :cancel
+    put :remove, :leave, :cancel
   end
 end

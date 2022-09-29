@@ -35,17 +35,19 @@
             <p style="font-size: min( 2vw, 15px)"><%= manage_group.group.description %></p>
           </div>
           <div class="col-2">
-            <div class="d-flex justify-content-end">
-              <div class="dropstart">
-                <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                  <h5>...</h5>
-                </button>
-                <ul class="dropdown-menu shadow-sm border-light">
-                  <%= link_to "Edit", edit_group_path(manage_group.group), class: "dropdown-item" %>
-                  <%= link_to 'Delete', group_path(manage_group.group), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
-                </ul>
+            <% if policy(manage_group.group).edit? %>
+              <div class="d-flex justify-content-end">
+                <div class="dropstart">
+                  <button class="btn " id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <h5>...</h5>
+                  </button>
+                  <ul class="dropdown-menu shadow-sm border-light">
+                    <%= link_to "Edit", edit_group_path(manage_group.group), class: "dropdown-item" %>
+                    <%= link_to 'Delete', group_path(manage_group.group), method: :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "dropdown-item" %>
+                  </ul>
+                </div>
               </div>
-            </div>
+            <% end %>
           </div>
         </div>
       </div>
@@ -113,7 +115,7 @@
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-end">
-              <%= link_to "Leave Group", join_group_leave_path(joined_group, @group), data: { confirm: 'Are you sure you want to approve this user?' }, class: "btn btn-light btn-sm px-2 shadow-sm mt-2", method: :put if joined_group.may_leave? %>
+              <%= link_to "Leave", join_group_leave_path(joined_group, @group), data: { confirm: 'Are you sure you want to approve this user?' }, class: "btn btn-light btn-sm px-2 shadow-sm mt-2", method: :put if joined_group.may_leave? %>
             </div>
           </div>
         </div>

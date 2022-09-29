@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_132503) do
+ActiveRecord::Schema.define(version: 2022_09_29_074232) do
 
   create_table "comments", charset: "utf8mb4", force: :cascade do |t|
     t.string "content"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_132503) do
     t.bigint "group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_owner", default: false
     t.index ["group_id"], name: "index_join_groups_on_group_id"
     t.index ["user_id"], name: "index_join_groups_on_user_id"
   end
@@ -75,9 +76,6 @@ ActiveRecord::Schema.define(version: 2022_09_27_132503) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.string "image"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

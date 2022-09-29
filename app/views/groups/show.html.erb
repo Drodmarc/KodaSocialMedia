@@ -18,7 +18,7 @@
         </div>
         <div class="col-sm-8">
           <div class="d-flex justify-content-end mt-2">
-            <%= link_to "Posts", group_path(records: 'post'), class: "btn btn-light btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
+            <%= link_to "Pending Posts", group_path(records: 'post'), class: "btn btn-light btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
             <%= link_to "#{JoinGroup.pending.where(group: @group).size} Approval", group_path(records: 'approvals'), class: "btn btn-light btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
             <%= link_to "#{JoinGroup.approved.where(group: @group).size} Members", group_path(records: 'members'), class: "btn btn-light btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
             <%= link_to "Assign Role", group_path(records: 'assign_role'), class: "btn btn-light btn-sm mt-2 px-2 shadow-sm mx-2", style: "width: 130px; font-size: min( 1.5vw, 15px)" %>
@@ -33,7 +33,7 @@
         <div class="row">
           <div class="col-10">
             <h3 style="font-size: min( 2vw, 20px)"><b><%= approval.user.email %></b></h3>
-            <%= content_tag :div, approval.created_at.to_s(:long), class: "badge bg-light text-dark shadow-sm", style:"font-size: min( 1vw, 10px)"%>
+            <%= content_tag :div, approval.updated_at.to_s(:long), class: "badge bg-light text-dark shadow-sm", style: "font-size: min( 1vw, 10px)" %>
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-end">
@@ -48,13 +48,22 @@
     <div class="card mt-3 shadow">
       <div class="card-body" style="background-color: #e4ede4">
         <div class="row">
-          <div class="col-10">
+          <div class="col-8">
             <h3 style="font-size: min( 2vw, 20px)"><b><%= member.user.email %></b></h3>
-            <%= content_tag :div, member.created_at.to_s(:long), class: "badge bg-light text-dark shadow-sm", style:"font-size: min( 1vw, 10px)"%>
+            <%= content_tag :div, member.updated_at.to_s(:long), class: "badge bg-light text-dark shadow-sm", style: "font-size: min( 1vw, 10px)" %>
           </div>
-          <div class="col-2">
+          <div class="col-4">
             <div class="d-flex justify-content-end">
-              <%= link_to "Remove", join_group_remove_path(member, @group), data: { confirm: 'Are you sure you want to approve this user?' }, class: "btn btn-light btn-sm px-2 shadow-sm mt-2", method: :put if member.may_remove? %>
+              <% if params[:records] == 'members' %>
+                <%= link_to "Remove", join_group_remove_path(member, @group), data: { confirm: 'Are you sure you want to approve this user?' }, class: "btn btn-light btn-sm px-2 shadow-sm mt-2", method: :put if member.may_remove? %>
+              <% else %>
+                <%= form_for member, url: join_group_path(member, group_id: @group), method: :patch do |f| %>
+                  <div class="input-group">
+                  <%= f.select(:role, JoinGroup.roles.keys.map { |key| [key.humanize, key] }, { include_blank: "Role" }, { class: "form-control-sm form-select shadow-sm border-light", style: "font-size: min( 1vw, 18px)" }) %>
+                  <%= f.submit "Assign", data: { confirm: 'Are you sure you want to assign role for this user?' }, class: "btn btn-sm btn-success shadow-sm", style: "font-size: min( 1vw, 18px)" %>
+                  </div>
+                <% end %>
+              <% end %>
             </div>
           </div>
         </div>
